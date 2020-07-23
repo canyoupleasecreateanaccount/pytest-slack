@@ -84,6 +84,14 @@ def pytest_addoption(parser):
         help='Set icon (a url) for a failed run. Overrides slack_failed_icon'
     )
 
+    group.addoption(
+        '--slack_message',
+        action='store',
+        dest='slack_message',
+        default=None,
+        help='Set the message that will be send to slack channel'
+    )
+
 
 @pytest.hookimpl(hookwrapper=True)
 def pytest_terminal_summary(terminalreporter, exitstatus, config):
@@ -118,10 +126,13 @@ def pytest_terminal_summary(terminalreporter, exitstatus, config):
         emoji = config.option.slack_failed_emoji
         icon = config.option.slack_failed_icon
 
-    final_results = 'Passed=%s Failed=%s Skipped=%s Error=%s XFailed=%s XPassed=%s' % (
-        passed, failed, skipped, error, xfailed, xpassed)
-    if report_link:
-        final_results = '<%s|%s>' % (report_link, final_results)
+    if config.option.slack_message:
+        final_results = config.option.slack_message
+    else:
+        final_results = 'Passed=%s Failed=%s Skipped=%s Error=%s XFailed=%s XPassed=%s' % (
+            passed, failed, skipped, error, xfailed, xpassed)
+        if report_link:
+            final_results = '<%s|%s>' % (report_link, final_results)
 
     results_pattern = {
         "color": color,
