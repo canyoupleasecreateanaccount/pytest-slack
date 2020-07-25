@@ -136,12 +136,12 @@ def pytest_terminal_summary(terminalreporter, exitstatus, config):
 
     if config.option.slack_use_template:
         final_results = \
-            f"Tests were ran for service: {config.option.slack_service}\n"\
+            f"Tests were ran for service: *{config.option.slack_service}*\n"\
             f"================Results================\n" \
-            f":f_respect:    Passed:  {passed}\n" \
-            f":sad_cat:    Failed:  {failed}\n" \
-            f":'by'b:    Error:   {error}\n" \
-            f":e_bank:    Skipped: {skipped}\n" \
+            f":f_respect:    *Passed*:  {passed}\n" \
+            f":sad_cat:    *Failed*:  {failed}\n" \
+            f":'by'b:    *Error*:   {error}\n" \
+            f":e_bank:    *Skipped*: {skipped}\n" \
             f"====================================="
     else:
         final_results = 'Passed=%s Failed=%s Skipped=%s Error=%s XFailed=%s XPassed=%s' % (
