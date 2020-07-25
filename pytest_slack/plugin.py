@@ -85,11 +85,19 @@ def pytest_addoption(parser):
     )
 
     group.addoption(
-        '--slack_message',
+        '--slack_use_template',
         action='store',
-        dest='slack_message',
+        dest='slack_template',
         default=None,
-        help='Set the message that will be send to slack channel'
+        help='Use new template for message posting'
+    )
+
+    group.addoption(
+        '--slack_service',
+        action='store',
+        dest='slack_service',
+        default=None,
+        help='Name of service that had ran tests'
     )
 
 
@@ -126,8 +134,13 @@ def pytest_terminal_summary(terminalreporter, exitstatus, config):
         emoji = config.option.slack_failed_emoji
         icon = config.option.slack_failed_icon
 
-    if config.option.slack_message:
-        final_results = config.option.slack_message
+    if config.option.slack_use_template:
+        final_results = \
+            f"Tests were ran for service: {config.option.slack_service} \n" \
+            f"Passed:  {passed}" \
+            f"Failed:  {failed}" \
+            f"Error:   {error}" \
+            f"Skipped: {skipped}"
     else:
         final_results = 'Passed=%s Failed=%s Skipped=%s Error=%s XFailed=%s XPassed=%s' % (
             passed, failed, skipped, error, xfailed, xpassed)
