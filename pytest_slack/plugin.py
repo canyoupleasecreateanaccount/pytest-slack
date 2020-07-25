@@ -87,7 +87,7 @@ def pytest_addoption(parser):
     group.addoption(
         '--slack_use_template',
         action='store',
-        dest='slack_template',
+        dest='slack_use_template',
         default=None,
         help='Use new template for message posting'
     )
